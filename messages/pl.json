@@ -1,0 +1,31 @@
+{
+    "HomePage": {
+      "title": "Witaj w naszym sklepie!",
+      "about": "Przejdź do strony o nas",
+      "search": "Szukaj",
+      "cart": "Koszyk",
+      "shopTitle": "Sklep z biżuterią i kamieniami szlachetnymi",
+      "price": "Cena: {price} $",
+      "noProducts": "Brak dostępnych produktów.",
+      "categories": {
+        "necklaces": "Naszyjniki",
+        "rings": "Pierścionki",
+        "bracelets": "Bransoletki",
+        "earrings": "Kolczyki",
+        "gemstones": "Kamienie szlachetne"
+      }
+    },
+    "FAQ": {
+      "title": "Najczęściej zadawane pytania",
+      "question1": {
+        "title": "Jaka jest Wasza polityka zwrotów?",
+        "answer": "Możesz zwrócić każdy przedmiot w ciągu 30 dni od zakupu."
+      },
+      "question2": {
+        "title": "Jak mogę skontaktować się z pomocą?",
+        "answer": "Możesz się z nami skontaktować pod adresem support@example.com."
+      }
+    },
+    "faq": "FAQ"
+  }
+  

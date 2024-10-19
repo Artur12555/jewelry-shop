@@ -1,0 +1,30 @@
+{
+  "HomePage": {
+    "title": "Welcome to Our Store!",
+    "about": "Go to the about page",
+    "search": "Search",
+    "cart": "Cart",
+    "shopTitle": "Jewelry and Gems Shop",
+    "price": "Price: {price} $",
+    "noProducts": "No products available.",
+    "categories": {
+      "necklaces": "Necklaces",
+      "rings": "Rings",
+      "bracelets": "Bracelets",
+      "earrings": "Earrings",
+      "gemstones": "Gemstones"
+    }
+  },
+  "FAQ": {
+    "title": "Frequently Asked Questions",
+    "question1": {
+      "title": "What is your return policy?",
+      "answer": "You can return any item within 30 days of purchase."
+    },
+    "question2": {
+      "title": "How do I contact support?",
+      "answer": "You can reach us at support@example.com."
+    }
+  },
+  "faq": "FAQ"
+}

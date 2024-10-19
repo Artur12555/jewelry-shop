@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
 
 :root {
   --background: #ffffff;
@@ -19,6 +21,10 @@ body {
   background: var(--background);
   font-family: 'Lato', Helvetica, sans-serif; /* Set Lato as the default font */
   font-weight: 100;
+}
+
+.category-bar {
+  font-family: 'Playfair Display', serif; /* Ensures Playfair_Display is applied */
 }
 
 @layer utilities {
