@@ -1,0 +1,38 @@
+{
+  "name": "jewelry-shop",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "server": "node api/server.js",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/pg": "^8.11.10",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "next": "14.2.15",
+    "pg": "^8.13.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.3.0",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.12",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
+    "nodemon": "^3.1.7",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
