@@ -1,6 +1,8 @@
 // app/[locale]/layout.tsx
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 
 export default async function LocaleLayout({
   children,
@@ -14,7 +16,9 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <Navbar />
       {children}
+      <Footer />
     </NextIntlClientProvider>
   );
 }

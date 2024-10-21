@@ -1,31 +1,63 @@
 {
-    "HomePage": {
-      "title": "Witaj w naszym sklepie!",
-      "about": "Przejdź do strony o nas",
-      "search": "Szukaj",
-      "cart": "Koszyk",
-      "shopTitle": "Sklep z biżuterią i kamieniami szlachetnymi",
-      "price": "Cena: {price} $",
-      "noProducts": "Brak dostępnych produktów.",
-      "categories": {
-        "necklaces": "Naszyjniki",
-        "rings": "Pierścionki",
-        "bracelets": "Bransoletki",
-        "earrings": "Kolczyki",
-        "gemstones": "Kamienie szlachetne"
-      }
+  "HomePage": {
+    "title": "Witaj w naszym sklepie!",
+    "about": "Przejdź do strony o nas",
+    "search": "Szukaj",
+    "cart": "Koszyk",
+    "shopTitle": "Sklep z biżuterią i kamieniami szlachetnymi",
+    "price": "Cena: {price} $",
+    "noProducts": "Brak dostępnych produktów.",
+    "categories": {
+      "necklaces": "Naszyjniki",
+      "rings": "Pierścionki",
+      "bracelets": "Bransoletki",
+      "earrings": "Kolczyki",
+      "gemstones": "Kamienie szlachetne"
+    }
+  },
+  "FAQ": {
+    "title": "Najczęściej zadawane pytania",
+    "question1": {
+      "title": "Jaka jest Wasza polityka zwrotów?",
+      "answer": "Możesz zwrócić każdy przedmiot w ciągu 30 dni od zakupu."
     },
-    "FAQ": {
-      "title": "Najczęściej zadawane pytania",
-      "question1": {
-        "title": "Jaka jest Wasza polityka zwrotów?",
-        "answer": "Możesz zwrócić każdy przedmiot w ciągu 30 dni od zakupu."
-      },
-      "question2": {
-        "title": "Jak mogę skontaktować się z pomocą?",
-        "answer": "Możesz się z nami skontaktować pod adresem support@example.com."
-      }
-    },
-    "faq": "FAQ"
+    "question2": {
+      "title": "Jak mogę skontaktować się z pomocą?",
+      "answer": "Możesz się z nami skontaktować pod adresem support@example.com."
+    }
+  },
+  "faq": "FAQ",
+  "login": {
+    "title": "Zaloguj się",
+    "email_placeholder": "Email",
+    "password_placeholder": "Hasło",
+    "login_button": "Zaloguj się",
+    "forgot_password": "Zapomniałeś hasła?"
+  },
+  "register": {
+    "title": "Zarejestruj się",
+    "email_placeholder": "Email",
+    "password_placeholder": "Hasło",
+    "confirm_password_placeholder": "Potwierdź hasło",
+    "register_button": "Zarejestruj się",
+    "password_mismatch": "Hasła się nie zgadzają"
+  },
+  "Footer": {
+    "help": "Pomoc",
+    "contact": "Kontakt",
+    "faq": "FAQ",
+    "cookies": "Zarządzaj plikami cookies",
+    "terms": "Regulamin",
+    "privacy": "Polityka prywatności",
+    "paymentsDelivery": "Płatności i Dostawa",
+    "paymentMethods": "Sposoby płatności",
+    "personalizedOrders": "Zamówienia Personalizowane",
+    "deliveryCosts": "Koszty dostawy",
+    "orderProcessing": "Czas realizacji zamówień",
+    "customerSupport": "Obsługa Klienta",
+    "returns": "Zwroty",
+    "complaints": "Reklamacje",
+    "authenticityGuarantee": "Gwarancja autentyczności produktów",
+    "copyright": "przez Twoją firmę. Stworzone przez Twoje imię."
   }
-  
+}

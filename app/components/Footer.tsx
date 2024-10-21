@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -27,15 +28,19 @@ const FooterContainer = styled.div`
 
 const Column = styled.div`
   flex: 1;
-  min-width: 150px; 
+  min-width: 244px;
   padding: 10px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    align-items: center;
+  }
 `;
 
 const ColumnHeader = styled.h4`
   font-family: 'Playfair Display', serif;
-  font-size: 1.3rem; 
+  font-size: 1.3rem;
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
@@ -48,10 +53,16 @@ const ColumnHeader = styled.h4`
 
 const ColumnItem = styled.span`
   font-family: 'Lato', sans-serif;
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
   color: gray;
   margin-bottom: 5px;
   padding-left: 20px;
+  transition: transform 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    color: white;
+  }
 
   @media (max-width: 768px) {
     display: ${({ show }) => (show ? 'block' : 'none')};
@@ -59,7 +70,7 @@ const ColumnItem = styled.span`
 `;
 
 const CopyrightContainer = styled.div`
-  background-color: #111; 
+  background-color: #111;
   color: white;
   width: 100%;
   padding: 10px 0;
@@ -69,6 +80,7 @@ const CopyrightContainer = styled.div`
 `;
 
 const Footer = () => {
+  const t = useTranslations('Footer');
   const [expandedColumns, setExpandedColumns] = useState({});
 
   const toggleColumn = (column) => {
@@ -83,45 +95,45 @@ const Footer = () => {
       <OuterContainer>
         <FooterContainer>
           <Column>
-            <ColumnHeader onClick={() => toggleColumn('pomoc')}>
-              Pomoc 
+            <ColumnHeader onClick={() => toggleColumn('help')}>
+              {t('help')}
               <span style={{ marginLeft: 'auto', display: 'none', '@media (max-width: 768px)': { display: 'block' } }}>
-                {expandedColumns['pomoc'] ? <FaChevronUp /> : <FaChevronDown />}
+                {expandedColumns['help'] ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </ColumnHeader>
-            <ColumnItem show={expandedColumns['pomoc']}>Kontakt</ColumnItem>
-            <ColumnItem show={expandedColumns['pomoc']}>FAQ</ColumnItem>
-            <ColumnItem show={expandedColumns['pomoc']}>Zarządaj plikami cookies</ColumnItem>
-            <ColumnItem show={expandedColumns['pomoc']}>Regulamin</ColumnItem>
-            <ColumnItem show={expandedColumns['pomoc']}>Polityka prywatności</ColumnItem>
-            <ColumnItem show={expandedColumns['pomoc']}>Płatności i Dostawa</ColumnItem>
+            <ColumnItem show={expandedColumns['help']}>{t('contact')}</ColumnItem>
+            <ColumnItem show={expandedColumns['help']}>{t('faq')}</ColumnItem>
+            <ColumnItem show={expandedColumns['help']}>{t('cookies')}</ColumnItem>
+            <ColumnItem show={expandedColumns['help']}>{t('terms')}</ColumnItem>
+            <ColumnItem show={expandedColumns['help']}>{t('privacy')}</ColumnItem>
+            <ColumnItem show={expandedColumns['help']}>{t('paymentsDelivery')}</ColumnItem>
           </Column>
           <Column>
-            <ColumnHeader onClick={() => toggleColumn('sposobyPlatnosci')}>
-              Sposoby płatności 
+            <ColumnHeader onClick={() => toggleColumn('paymentMethods')}>
+              {t('paymentMethods')}
               <span style={{ marginLeft: 'auto', display: 'none', '@media (max-width: 768px)': { display: 'block' } }}>
-                {expandedColumns['sposobyPlatnosci'] ? <FaChevronUp /> : <FaChevronDown />}
+                {expandedColumns['paymentMethods'] ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </ColumnHeader>
-            <ColumnItem show={expandedColumns['sposobyPlatnosci']}>Zamówienia Personalizowane</ColumnItem>
-            <ColumnItem show={expandedColumns['sposobyPlatnosci']}>Koszty i formy dostawy</ColumnItem>
-            <ColumnItem show={expandedColumns['sposobyPlatnosci']}>Czas realizacji zamówień</ColumnItem>
+            <ColumnItem show={expandedColumns['paymentMethods']}>{t('personalizedOrders')}</ColumnItem>
+            <ColumnItem show={expandedColumns['paymentMethods']}>{t('deliveryCosts')}</ColumnItem>
+            <ColumnItem show={expandedColumns['paymentMethods']}>{t('orderProcessing')}</ColumnItem>
           </Column>
           <Column>
-            <ColumnHeader onClick={() => toggleColumn('obslugaKlienta')}>
-              Obsługa Klienta 
+            <ColumnHeader onClick={() => toggleColumn('customerSupport')}>
+              {t('customerSupport')}
               <span style={{ marginLeft: 'auto', display: 'none', '@media (max-width: 768px)': { display: 'block' } }}>
-                {expandedColumns['obslugaKlienta'] ? <FaChevronUp /> : <FaChevronDown />}
+                {expandedColumns['customerSupport'] ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </ColumnHeader>
-            <ColumnItem show={expandedColumns['obslugaKlienta']}>Zwroty</ColumnItem>
-            <ColumnItem show={expandedColumns['obslugaKlienta']}>Reklamacje</ColumnItem>
-            <ColumnItem show={expandedColumns['obslugaKlienta']}>Gwarancja autentyczności produktów</ColumnItem>
+            <ColumnItem show={expandedColumns['customerSupport']}>{t('returns')}</ColumnItem>
+            <ColumnItem show={expandedColumns['customerSupport']}>{t('complaints')}</ColumnItem>
+            <ColumnItem show={expandedColumns['customerSupport']}>{t('authenticityGuarantee')}</ColumnItem>
           </Column>
         </FooterContainer>
       </OuterContainer>
       <CopyrightContainer>
-        &copy; {new Date().getFullYear()} by Your Company Name. Created by Your Name.
+        &copy; {new Date().getFullYear()} {t('copyright')}.
       </CopyrightContainer>
     </>
   );

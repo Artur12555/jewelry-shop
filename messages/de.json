@@ -1,31 +1,63 @@
 {
-    "HomePage": {
-      "title": "Willkommen in unserem Geschäft!",
-      "about": "Gehe zur Über-Seite",
-      "search": "Suche",
-      "cart": "Warenkorb",
-      "shopTitle": "Schmuck und Edelsteine Geschäft",
-      "price": "Preis: {price} $",
-      "noProducts": "Keine Produkte verfügbar.",
-      "categories": {
-        "necklaces": "Halsketten",
-        "rings": "Ringe",
-        "bracelets": "Armbänder",
-        "earrings": "Ohrringe",
-        "gemstones": "Edelsteine"
-      }
+  "HomePage": {
+    "title": "Willkommen in unserem Geschäft!",
+    "about": "Gehe zur Über-Seite",
+    "search": "Suche",
+    "cart": "Warenkorb",
+    "shopTitle": "Schmuck und Edelsteine Geschäft",
+    "price": "Preis: {price} $",
+    "noProducts": "Keine Produkte verfügbar.",
+    "categories": {
+      "necklaces": "Halsketten",
+      "rings": "Ringe",
+      "bracelets": "Armbänder",
+      "earrings": "Ohrringe",
+      "gemstones": "Edelsteine"
+    }
+  },
+  "FAQ": {
+    "title": "Häufig gestellte Fragen",
+    "question1": {
+      "title": "Was ist Ihre Rückgaberegelung?",
+      "answer": "Sie können jeden Artikel innerhalb von 30 Tagen nach dem Kauf zurückgeben."
     },
-    "FAQ": {
-      "title": "Häufig gestellte Fragen",
-      "question1": {
-        "title": "Was ist Ihre Rückgaberegelung?",
-        "answer": "Sie können jeden Artikel innerhalb von 30 Tagen nach dem Kauf zurückgeben."
-      },
-      "question2": {
-        "title": "Wie kann ich den Support kontaktieren?",
-        "answer": "Sie können uns unter support@example.com erreichen."
-      }
-    },
-    "faq": "FAQ"
+    "question2": {
+      "title": "Wie kann ich den Support kontaktieren?",
+      "answer": "Sie können uns unter support@example.com erreichen."
+    }
+  },
+  "faq": "FAQ",
+  "login": {
+    "title": "Anmelden",
+    "email_placeholder": "Email",
+    "password_placeholder": "Passwort",
+    "login_button": "Anmelden",
+    "forgot_password": "Passwort vergessen?"
+  },
+  "register": {
+    "title": "Registrieren",
+    "email_placeholder": "Email",
+    "password_placeholder": "Passwort",
+    "confirm_password_placeholder": "Passwort bestätigen",
+    "register_button": "Registrieren",
+    "password_mismatch": "Passwörter stimmen nicht überein"
+  },
+  "Footer": {
+    "help": "Hilfe",
+    "contact": "Kontakt",
+    "faq": "FAQ",
+    "cookies": "Cookies verwalten",
+    "terms": "Geschäftsbedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "paymentsDelivery": "Zahlungen und Lieferung",
+    "paymentMethods": "Zahlungsmethoden",
+    "personalizedOrders": "Personalisierte Bestellungen",
+    "deliveryCosts": "Lieferkosten",
+    "orderProcessing": "Bestellzeiten",
+    "customerSupport": "Kundendienst",
+    "returns": "Rücksendungen",
+    "complaints": "Reklamationen",
+    "authenticityGuarantee": "Echtheitsgarantie",
+    "copyright": "von Ihrem Firmennamen. Erstellt von Ihrem Namen."
   }
-  
+}

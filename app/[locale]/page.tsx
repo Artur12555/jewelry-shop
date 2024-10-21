@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 
 type Product = {
   id: number; // or string based on your schema
@@ -35,7 +33,6 @@ const Home = () => {
 
   return (
     <div>
-      <Navbar />
       <h1>{t('title')}</h1>
       <h2>{t('shopTitle')}</h2>
       <div>
@@ -52,7 +49,6 @@ const Home = () => {
           <p>{t('noProducts')}</p>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

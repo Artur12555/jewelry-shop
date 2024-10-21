@@ -1,4 +1,22 @@
 {
+  "login": {
+    "title": "Log In",
+    "email_placeholder": "Email",
+    "password_placeholder": "Password",
+    "login_button": "Login",
+    "forgot_password": "Forgot password?"
+  },
+  "register": {
+    "title": "Register",
+    "email_placeholder": "Email",
+    "password_placeholder": "Password",
+    "confirm_password_placeholder": "Confirm Password",
+    "register_button": "Register",
+    "password_mismatch": "Passwords do not match"
+  },
+  "common": {
+    "error": "An error occurred. Please try again."
+  },
   "HomePage": {
     "title": "Welcome to Our Store!",
     "about": "Go to the about page",
@@ -26,5 +44,23 @@
       "answer": "You can reach us at support@example.com."
     }
   },
-  "faq": "FAQ"
+  "faq": "FAQ",
+  "Footer": {
+    "help": "Help",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "cookies": "Manage Cookies",
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy",
+    "paymentsDelivery": "Payments and Delivery",
+    "paymentMethods": "Payment Methods",
+    "personalizedOrders": "Personalized Orders",
+    "deliveryCosts": "Delivery Costs",
+    "orderProcessing": "Order Processing Time",
+    "customerSupport": "Customer Support",
+    "returns": "Returns",
+    "complaints": "Complaints",
+    "authenticityGuarantee": "Authenticity Guarantee",
+    "copyright": "Your Company Name. Created by Your Name"
+  }
 }
