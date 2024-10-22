@@ -10,8 +10,16 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 140px;
+  padding-bottom: 100px;
+
   @media (min-width: 768px) {
     flex-direction: row;
+    justify-content: center;
+    width: 30%;
+    min-width: 800px;
+    margin-bottom: 100px;
+
+    margin: 0 auto;
   }
 `;
 

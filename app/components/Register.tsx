@@ -9,8 +9,12 @@ import { useTranslations } from 'next-intl';
 
 const Container = styled.div`
   max-width: 400px;
+  width: 90%;
+  margin: 0 auto;
+  @media (min-width: 768px) {
+    width: auto;
+  }
 `;
-
 const Title = styled.h2`
   text-align: center;
 `;
@@ -33,6 +37,7 @@ const InputGroup = styled.div`
 
 const Input = styled.input`
   width: 100%;
+  box-sizing: border-box;
   padding: 10px 40px 10px 30px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -42,7 +47,6 @@ const Input = styled.input`
     border-color: #0070f3;
   }
 `;
-
 const Button = styled.button`
   padding: 10px;
   background-color: black;
