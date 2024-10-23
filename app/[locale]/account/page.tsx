@@ -161,8 +161,11 @@ const GoldCellProductName = styled.td`
   text-overflow: ellipsis;
 `;
 
+interface Params {
+  locale: string;
+}
 
-const Account = ({ params }) => {
+const Account = ({ params }: { params: Params }) => {
   const { locale } = params;
   const { data: session, status } = useSession();
   const [address, setAddress] = useState({
@@ -182,7 +185,7 @@ const Account = ({ params }) => {
   const t = useTranslations('account');
 
   useEffect(() => {
-    if (status === "loading") return;
+    if (status === 'loading') return;
     if (!session) {
       router.push(`/${locale}/login`);
     } else {
@@ -213,7 +216,7 @@ const Account = ({ params }) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'user-id': session.user.id
+        'user-id': session.user.id,
       },
     });
 
@@ -262,9 +265,9 @@ const Account = ({ params }) => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setAddress(prev => ({ ...prev, [name]: value }));
+    setAddress((prev) => ({ ...prev, [name]: value }));
   };
 
   if (!session) return null;
@@ -414,14 +417,16 @@ const Account = ({ params }) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {orders.map(order => (
+                      {orders.map((order) => (
                         <tr key={order.id}>
                           <GoldCell data-label={t('orderId')}>{order.id}</GoldCell>
-                          <GoldCellProductName data-label={t('productName')}>{order.product_name}</GoldCellProductName>
+                          <GoldCellProductName data-label={t('productName')}>
+                            {order.product_name}
+                          </GoldCellProductName>
                           <GoldCell data-label={t('quantity')}>{order.quantity}</GoldCell>
                           <GoldCell data-label={t('orderDate')}>
-                            {order.order_date 
-                              ? new Date(order.order_date.replace(' ', 'T')).toLocaleDateString() 
+                            {order.order_date
+                              ? new Date(order.order_date.replace(' ', 'T')).toLocaleDateString()
                               : 'N/A'}
                           </GoldCell>
                           <GoldCell data-label={t('status')}>{order.status}</GoldCell>
