@@ -212,7 +212,8 @@ const Account = ({ params }: { params: Params }) => {
   };
 
   const fetchOrders = async () => {
-    const res = await fetch(`/api/auth/orders?email=${encodeURIComponent(session.user.email ?? '')}`, {
+    if (!session?.user?.email) return; // Ensure session and email exist
+    const res = await fetch(`/api/auth/orders?email=${encodeURIComponent(session.user.email)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
