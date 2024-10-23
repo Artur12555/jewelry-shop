@@ -1,8 +1,7 @@
 // app/layout.server.tsx
 import { Lato } from 'next/font/google';
 import { Metadata } from 'next';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import './globals.css'; // Import your global CSS file
 
 const lato = Lato({
   subsets: ['latin'],
@@ -18,9 +17,7 @@ export const metadata: Metadata = {
 export default function ServerLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="stylesheet" href="/path/to/your/style.css" />
-      </head>
+      <head />
       <body className={`${lato.variable} antialiased`}>
         <main>{children}</main>
       </body>

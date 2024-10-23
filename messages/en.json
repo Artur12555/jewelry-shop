@@ -62,5 +62,39 @@
     "complaints": "Complaints",
     "authenticityGuarantee": "Authenticity Guarantee",
     "copyright": "Your Company Name. Created by Your Name"
+  },
+  "account": {
+    "orders": "Orders",
+    "accountDetails": "Account Details",
+    "yourAccount": "Your Account",
+    "yourEmail": "Your email",
+    "yourAddress": "Your Address",
+    "name": "Name",
+    "surname": "Surname",
+    "street": "Street",
+    "zipcode": "ZIP Code",
+    "city": "City",
+    "country": "Country",
+    "region": "Region",
+    "saveAddress": "Save Address",
+    "cancel": "Cancel",
+    "editAddress": "Edit Address",
+    "addAddress": "Add Address",
+    "yourOrders": "Your Orders",
+    "orderId": "Order ID",
+    "productName": "Product Name",
+    "quantity": "Quantity",
+    "orderDate": "Order Date",
+    "status": "Status",
+    "noOrdersFound": "No orders found.",
+    "settings": "Settings",
+    "logOut": "Log Out",
+    "changePassword": "Change Password"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "users": "Manage Users",
+    "orders": "Manage Orders",
+    "products": "Manage Products"
   }
 }

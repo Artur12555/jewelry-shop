@@ -169,6 +169,7 @@ const CategoryBar = styled.div`
 
   span {
     transition: transform 0.3s ease;
+    cursor: pointer;
 
     &:hover {
       transform: scale(1.1);
@@ -244,10 +245,13 @@ const DropdownContainerMobile = styled.div`
     display: none;
   }
 `;
+
+const categories = ['necklaces', 'rings', 'bracelets', 'earrings', 'gemstones'];
+
 const Navbar = () => {
   const t = useTranslations('HomePage');
   const router = useRouter();
-  const { data: session } = useSession(); // Use useSession to get session data
+  const { data: session } = useSession(); 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -272,19 +276,22 @@ const Navbar = () => {
   };
 
   const handleLoginRedirect = () => {
-    const currentPath = window.location.pathname;
     const newPath = `/${selectedLocale}/login`;
     router.push(newPath);
   };
 
   const handleAccountRedirect = () => {
-    const currentPath = window.location.pathname;
     const newPath = `/${selectedLocale}/account`;
     router.push(newPath);
   };
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
+  };
+
+  const navigateToCategory = (category) => {
+    const newPath = `/${selectedLocale}/categories/${category}`;
+    router.push(newPath);
   };
 
   return (
@@ -334,21 +341,21 @@ const Navbar = () => {
         </IconsContainer>
       </NavbarContainer>
       <CategoryBar>
-        <span>{t('categories.necklaces')}</span>
-        <span>{t('categories.rings')}</span>
-        <span>{t('categories.bracelets')}</span>
-        <span>{t('categories.earrings')}</span>
-        <span>{t('categories.gemstones')}</span>
+        {categories.map(category => (
+          <span key={category} onClick={() => navigateToCategory(category)}>
+            {t(`categories.${category}`)}
+          </span>
+        ))}
       </CategoryBar>
       <Sidebar isOpen={sidebarOpen}>
         <CloseButton onClick={toggleSidebar}>
           <FaTimes size={30} />
         </CloseButton>
-        <CategoryLink>{t('categories.necklaces')}</CategoryLink>
-        <CategoryLink>{t('categories.rings')}</CategoryLink>
-        <CategoryLink>{t('categories.bracelets')}</CategoryLink>
-        <CategoryLink>{t('categories.earrings')}</CategoryLink>
-        <CategoryLink>{t('categories.gemstones')}</CategoryLink>
+        {categories.map(category => (
+          <CategoryLink key={category} onClick={() => navigateToCategory(category)}>
+            {t(`categories.${category}`)}
+          </CategoryLink>
+        ))}
         <DropdownContainerMobile>
           <LanguageDisplay onClick={() => setDropdownOpen(!dropdownOpen)}>
             {languageMap[selectedLocale] || selectedLocale.toUpperCase()}

@@ -59,5 +59,39 @@
     "complaints": "Reklamacje",
     "authenticityGuarantee": "Gwarancja autentyczności produktów",
     "copyright": "przez Twoją firmę. Stworzone przez Twoje imię."
+  },
+  "account": {
+    "orders": "Zamówienia",
+    "accountDetails": "Szczegóły konta",
+    "yourAccount": "Twoje konto",
+    "yourEmail": "Twój email",
+    "yourAddress": "Twój adres",
+    "name": "Imię",
+    "surname": "Nazwisko",
+    "street": "Ulica",
+    "zipcode": "Kod pocztowy",
+    "city": "Miasto",
+    "country": "Kraj",
+    "region": "Region",
+    "saveAddress": "Zapisz adres",
+    "cancel": "Anuluj",
+    "editAddress": "Edytuj adres",
+    "addAddress": "Dodaj adres",
+    "yourOrders": "Twoje zamówienia",
+    "orderId": "ID zamówienia",
+    "productName": "Nazwa produktu",
+    "quantity": "Ilość",
+    "orderDate": "Data zamówienia",
+    "status": "Status",
+    "noOrdersFound": "Brak zamówień.",
+    "settings": "Ustawienia",
+    "logOut": "Wyloguj się",
+    "changePassword": "Zmień hasło"
+  },
+  "admin": {
+    "title": "Panel Administracyjny",
+    "users": "Zarządzaj Użytkownikami",
+    "orders": "Zarządzaj Zamówieniami",
+    "products": "Zarządzaj Produktami"
   }
 }
