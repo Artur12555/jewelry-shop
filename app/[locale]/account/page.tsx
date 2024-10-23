@@ -109,31 +109,6 @@ const OrdersTable = styled.table`
   }
 `;
 
-const TableHeader = styled.th`
-  padding: 10px;
-  border-bottom: 2px solid #ddd;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const TableCell = styled.td`
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  @media (max-width: 768px) {
-    display: block;
-    border: none;
-    padding: 5px 0;
-    position: relative;
-    &:before {
-      content: attr(data-label);
-      font-weight: bold;
-      position: absolute;
-      left: 0;
-    }
-  }
-`;
 const ButtonAddress = styled.button`
   background-color: white;
   color: black;

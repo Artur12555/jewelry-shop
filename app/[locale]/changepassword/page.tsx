@@ -1,18 +1,15 @@
 "use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-const ChangePassword = ({ params }) => {
-  const { locale } = params;
+const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const { data: session } = useSession();
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +42,7 @@ const ChangePassword = ({ params }) => {
         setError(data.message || 'Failed to change password.');
         setSuccess(null);
       }
-    } catch (error) {
+    } catch {
       setError('An error occurred. Please try again.');
       setSuccess(null);
     }

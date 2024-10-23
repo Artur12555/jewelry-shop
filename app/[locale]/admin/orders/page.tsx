@@ -130,7 +130,7 @@ const ManageOrders = () => {
       const refreshedOrders = await fetch('/api/auth/usersorders').then(res => res.json());
       setOrders(refreshedOrders);
       setSelectedOrders([]); // Clear selected orders after update
-    } catch (error) {
+    } catch  {
       setError('Failed to update order status');
     }
   };

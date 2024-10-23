@@ -1,7 +1,7 @@
 // hooks/useStyledComponentsRegistry.tsx
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
 export function useStyledComponentsRegistry() {
