@@ -8,7 +8,7 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || '5432', 10),
 });
 
-export async function GET(req) {
+export async function GET() {
   try {
     const result = await pool.query('SELECT id, user_id, product_name, quantity, status FROM orders');
     return new Response(JSON.stringify(result.rows), { status: 200 });
