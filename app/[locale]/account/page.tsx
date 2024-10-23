@@ -195,7 +195,7 @@ const Account = ({ params }: { params: Params }) => {
   }, [session, status, locale, router]);
 
   const fetchAddress = async () => {
-    const res = await fetch(`/api/auth/address?email=${encodeURIComponent(session.user.email)}`, {
+    const res = await fetch(`/api/auth/address?email=${encodeURIComponent(session?.user?.email ?? '')}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -212,7 +212,7 @@ const Account = ({ params }: { params: Params }) => {
   };
 
   const fetchOrders = async () => {
-    const res = await fetch(`/api/auth/orders?email=${encodeURIComponent(session.user.email)}`, {
+    const res = await fetch(`/api/auth/orders?email=${encodeURIComponent(session.user.email ?? '')}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
