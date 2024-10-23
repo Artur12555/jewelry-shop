@@ -14,7 +14,7 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || '5432', 10),
 });
 
-export const authOptions = {
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -52,24 +52,23 @@ export const authOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 152222, // Set the session to last 15 seconds
-    updateAge: 122225, // Session will be updated every 15 seconds
+    maxAge: 152222,
+    updateAge: 122225,
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email; // Store email in token
+        token.email = user.email;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
-      session.user.email = token.email; // Include email in session
+      session.user.email = token.email;
       return session;
     },
   },
-};
+});
 
-const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
