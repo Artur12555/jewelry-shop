@@ -10,7 +10,7 @@ const ResetPassword = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const res = await fetch('/api/auth/reset-password', {

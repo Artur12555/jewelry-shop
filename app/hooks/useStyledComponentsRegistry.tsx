@@ -1,10 +1,9 @@
-// hooks/useStyledComponentsRegistry.tsx
 "use client";
 
 import { useState } from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
-export function useStyledComponentsRegistry() {
+export function useStyledComponentsRegistry(): [ServerStyleSheet, () => void] {
   const [sheet] = useState(() => new ServerStyleSheet());
 
   const hydrate = () => {

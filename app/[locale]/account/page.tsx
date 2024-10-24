@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTranslations } from 'next-intl';
+import { Session } from 'next-auth';
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -165,9 +166,17 @@ interface Params {
   locale: string;
 }
 
+interface Order {
+  id: number; // Assuming id is a number, change this if it's a string
+  product_name: string;
+  quantity: number;
+  order_date: string; // Adjust this type if the format is different
+  status: string;
+}
+
 const Account = ({ params }: { params: Params }) => {
   const { locale } = params;
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession() as { data: Session | null; status: string };
   const [address, setAddress] = useState({
     name: '',
     surname: '',
@@ -179,7 +188,7 @@ const Account = ({ params }: { params: Params }) => {
   });
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState(null);
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [view, setView] = useState('orders');
   const router = useRouter();
   const t = useTranslations('account');
@@ -247,6 +256,7 @@ const Account = ({ params }: { params: Params }) => {
   };
 
   const updateAddress = async () => {
+    if (!session) return; // Ensure session is available
     const res = await fetch('/api/auth/address', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -255,7 +265,7 @@ const Account = ({ params }: { params: Params }) => {
         ...address,
       }),
     });
-
+  
     if (res.ok) {
       setEditMode(false);
       setError(null);
@@ -265,6 +275,7 @@ const Account = ({ params }: { params: Params }) => {
       setError(data.message);
     }
   };
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

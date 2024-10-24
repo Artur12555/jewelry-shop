@@ -39,19 +39,29 @@ const Button = styled.button`
 
 const categories = ['necklaces', 'rings', 'bracelets', 'earrings', 'gemstones'];
 
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  image_url: string;
+  category: string;
+  stock: number;
+};
+
 const ManageProducts = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [filteredCategory, setFilteredCategory] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [newProduct, setNewProduct] = useState({
+  const [error, setError] = useState<string | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
     name: '',
-    price: '',
+    price: 0,
     description: '',
     image_url: '',
     category: '',
-    stock: '',
+    stock: 0,
   });
 
   useEffect(() => {
@@ -62,7 +72,11 @@ const ManageProducts = () => {
         const data = await response.json();
         setProducts(data);
       } catch (error) {
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unexpected error occurred');
+        }
       } finally {
         setLoading(false);
       }
@@ -71,11 +85,11 @@ const ManageProducts = () => {
     fetchProducts();
   }, [filteredCategory]);
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilteredCategory(e.target.value);
   };
 
-  const handleEditClick = (product) => {
+  const handleEditClick = (product: Product) => {
     setEditingProduct(product);
     setNewProduct(product);
   };
@@ -94,11 +108,11 @@ const ManageProducts = () => {
       setProducts((prev) => [...prev, addedProduct]);
       setNewProduct({
         name: '',
-        price: '',
+        price: 0,
         description: '',
         image_url: '',
         category: '',
-        stock: '',
+        stock: 0,
       });
     }
   };
@@ -109,7 +123,7 @@ const ManageProducts = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newProduct),
+      body: JSON.stringify({ ...newProduct, id: editingProduct?.id }), // Ensure the ID is included
     });
 
     if (response.ok) {
@@ -120,11 +134,11 @@ const ManageProducts = () => {
       setEditingProduct(null);
       setNewProduct({
         name: '',
-        price: '',
+        price: 0,
         description: '',
         image_url: '',
         category: '',
-        stock: '',
+        stock: 0,
       });
     }
   };
@@ -176,7 +190,7 @@ const ManageProducts = () => {
                   <input
                     type="number"
                     value={newProduct.price}
-                    onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+                    onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
                   />
                 ) : (
                   product.price
@@ -224,7 +238,7 @@ const ManageProducts = () => {
                   <input
                     type="number"
                     value={newProduct.stock}
-                    onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+                    onChange={(e) => setNewProduct({ ...newProduct, stock: Number(e.target.value) })}
                   />
                 ) : (
                   product.stock
@@ -256,7 +270,7 @@ const ManageProducts = () => {
           type="number"
           placeholder="Price"
           value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+          onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
         />
         <input
           type="text"
@@ -283,7 +297,7 @@ const ManageProducts = () => {
           type="number"
           placeholder="Stock"
           value={newProduct.stock}
-          onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+          onChange={(e) => setNewProduct({ ...newProduct, stock: Number(e.target.value) })}
         />
         <Button onClick={handleAddProduct}>Add Product</Button>
       </div>

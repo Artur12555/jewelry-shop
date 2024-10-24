@@ -51,13 +51,14 @@ const ColumnHeader = styled.h4`
   }
 `;
 
-const ColumnItem = styled.span`
+const ColumnItem = styled.span<{ show?: boolean }>`
   font-family: 'Lato', sans-serif;
   font-size: 0.9rem;
   color: gray;
   margin-bottom: 5px;
   padding-left: 20px;
   transition: transform 0.3s ease, color 0.3s ease;
+  display: ${({ show }) => (show ? 'block' : 'none')};
 
   &:hover {
     transform: scale(1.1);
@@ -79,11 +80,15 @@ const CopyrightContainer = styled.div`
   font-size: 1rem;
 `;
 
+interface ExpandedColumns {
+  [key: string]: boolean;
+}
+
 const Footer = () => {
   const t = useTranslations('Footer');
-  const [expandedColumns, setExpandedColumns] = useState({});
+  const [expandedColumns, setExpandedColumns] = useState<ExpandedColumns>({});
 
-  const toggleColumn = (column) => {
+  const toggleColumn = (column: string) => {
     setExpandedColumns((prev) => ({
       ...prev,
       [column]: !prev[column],
@@ -97,7 +102,7 @@ const Footer = () => {
           <Column>
             <ColumnHeader onClick={() => toggleColumn('help')}>
               {t('help')}
-              <span style={{ marginLeft: 'auto', display: 'none', '@media (max-width: 768px)': { display: 'block' } }}>
+              <span style={{ marginLeft: 'auto', display: 'block' }}>
                 {expandedColumns['help'] ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </ColumnHeader>
@@ -111,7 +116,7 @@ const Footer = () => {
           <Column>
             <ColumnHeader onClick={() => toggleColumn('paymentMethods')}>
               {t('paymentMethods')}
-              <span style={{ marginLeft: 'auto', display: 'none', '@media (max-width: 768px)': { display: 'block' } }}>
+              <span style={{ marginLeft: 'auto', display: 'block' }}>
                 {expandedColumns['paymentMethods'] ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </ColumnHeader>
@@ -122,7 +127,7 @@ const Footer = () => {
           <Column>
             <ColumnHeader onClick={() => toggleColumn('customerSupport')}>
               {t('customerSupport')}
-              <span style={{ marginLeft: 'auto', display: 'none', '@media (max-width: 768px)': { display: 'block' } }}>
+              <span style={{ marginLeft: 'auto', display: 'block' }}>
                 {expandedColumns['customerSupport'] ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </ColumnHeader>

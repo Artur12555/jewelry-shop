@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { FaShoppingBag, FaSearch, FaCheck, FaTimes, FaUserAlt, FaSignInAlt } from 'react-icons/fa';
+import { FaShoppingBag, FaSearch, FaCheck, FaUserAlt, FaSignInAlt } from 'react-icons/fa';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -113,7 +113,7 @@ const LanguageDisplay = styled.div`
   }
 `;
 
-const DropdownMenu = styled.div`
+const DropdownMenu = styled.div<{ open: boolean }>`
   position: absolute;
   top: 100%;
   left: 50%;
@@ -194,7 +194,7 @@ const HamburgerLine = styled.div`
   margin: 4px 0;
 `;
 
-const Sidebar = styled.div`
+const Sidebar = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -237,14 +237,6 @@ const DropdownContainerDesktop = styled.div`
   }
 `;
 
-const DropdownContainerMobile = styled.div`
-  position: relative;
-  margin-left: 20px;
-  margin-top: 10px;
-  @media (min-width: 769px) {
-    display: none;
-  }
-`;
 
 const categories = ['necklaces', 'rings', 'bracelets', 'earrings', 'gemstones'];
 
@@ -253,7 +245,7 @@ const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession(); 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState('');
+  const [selectedLocale, setSelectedLocale] = useState<string>('en'); // Default locale
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -261,12 +253,11 @@ const Navbar = () => {
     if (savedLocale) {
       setSelectedLocale(savedLocale);
     } else {
-      const defaultLocale = router.locale || 'en';
-      setSelectedLocale(defaultLocale);
+      setSelectedLocale('en'); // Default to 'en' if no locale is saved
     }
-  }, [router]);
+  }, []);
 
-  const handleLanguageChange = (locale) => {
+  const handleLanguageChange = (locale: keyof typeof languageMap) => {
     localStorage.setItem('locale', locale);
     const currentPath = window.location.pathname;
     const newPath = `/${locale}${currentPath.replace(/^\/[a-z]{2}/, '')}`;
@@ -289,7 +280,7 @@ const Navbar = () => {
     setSidebarOpen((prev) => !prev);
   };
 
-  const navigateToCategory = (category) => {
+  const navigateToCategory = (category: string) => {
     const newPath = `/${selectedLocale}/categories/${category}`;
     router.push(newPath);
   };
@@ -318,58 +309,49 @@ const Navbar = () => {
           </Hamburger>
           <DropdownContainerDesktop>
             <LanguageDisplay onClick={() => setDropdownOpen(!dropdownOpen)}>
-              {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
+              {languageMap[selectedLocale as keyof typeof languageMap] || selectedLocale.toUpperCase()}
             </LanguageDisplay>
             <DropdownMenu open={dropdownOpen}>
               {Object.keys(languageMap).map((locale) => (
-                <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
-                  {languageMap[locale]}
-                  {selectedLocale === locale && <CheckIcon />}
+                <DropdownItem key={locale} onClick={() => handleLanguageChange(locale as keyof typeof languageMap)}>
+                  {languageMap[locale as keyof typeof languageMap]}
+                  {locale === selectedLocale && <CheckIcon />}
                 </DropdownItem>
               ))}
             </DropdownMenu>
           </DropdownContainerDesktop>
-          <IconWrapper onClick={session ? handleAccountRedirect : handleLoginRedirect}>
-            {session ? <FaUserAlt size={30} /> : <FaSignInAlt size={30} />}
-          </IconWrapper>
           <IconWrapper>
-            <FaSearch size={30} />
-          </IconWrapper>
-          <IconWrapper>
-            <FaShoppingBag size={30} />
+            <FaSearch />
+            <FaShoppingBag />
+            {session ? (
+              <>
+                <IconWrapper onClick={handleAccountRedirect}>
+                  <FaUserAlt />
+                </IconWrapper>
+              </>
+            ) : (
+              <IconWrapper onClick={handleLoginRedirect}>
+                <FaSignInAlt />
+              </IconWrapper>
+            )}
           </IconWrapper>
         </IconsContainer>
       </NavbarContainer>
+      <Sidebar isOpen={sidebarOpen}>
+        <CloseButton onClick={toggleSidebar}>✖</CloseButton>
+        {categories.map((category) => (
+          <CategoryLink key={category} onClick={() => navigateToCategory(category)}>
+            {t(category.charAt(0).toUpperCase() + category.slice(1))}
+          </CategoryLink>
+        ))}
+      </Sidebar>
       <CategoryBar>
-        {categories.map(category => (
+        {categories.map((category) => (
           <span key={category} onClick={() => navigateToCategory(category)}>
-            {t(`categories.${category}`)}
+            {t(category.charAt(0).toUpperCase() + category.slice(1))}
           </span>
         ))}
       </CategoryBar>
-      <Sidebar isOpen={sidebarOpen}>
-        <CloseButton onClick={toggleSidebar}>
-          <FaTimes size={30} />
-        </CloseButton>
-        {categories.map(category => (
-          <CategoryLink key={category} onClick={() => navigateToCategory(category)}>
-            {t(`categories.${category}`)}
-          </CategoryLink>
-        ))}
-        <DropdownContainerMobile>
-          <LanguageDisplay onClick={() => setDropdownOpen(!dropdownOpen)}>
-            {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
-          </LanguageDisplay>
-          <DropdownMenu open={dropdownOpen}>
-            {Object.keys(languageMap).map((locale) => (
-              <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
-                {languageMap[locale]}
-                {selectedLocale === locale && <CheckIcon />}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </DropdownContainerMobile>
-      </Sidebar>
     </OuterContainer>
   );
 };

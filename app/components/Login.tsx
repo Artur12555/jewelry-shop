@@ -1,8 +1,7 @@
-// app/Login.jsx
 "use client";
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, SignInResponse } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { FaUser, FaLock } from 'react-icons/fa';
 import styled from 'styled-components';
@@ -73,17 +72,17 @@ const ForgotPassword = styled.a`
 `;
 
 const Login = () => {
-  const t  = useTranslations('login');
+  const t = useTranslations('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState<string>(''); // Initialize as empty string
+  const [message, setMessage] = useState<string>(''); // Initialize as empty string
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    const res = await signIn('credentials', {
+    const res: SignInResponse | undefined = await signIn('credentials', {
       redirect: false,
       email,
       password,
@@ -97,7 +96,7 @@ const Login = () => {
     }
   };
 
-  const handleForgotPassword = async (e) => {
+  const handleForgotPassword = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     const res = await fetch('/api/auth/login', {

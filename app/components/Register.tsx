@@ -1,4 +1,3 @@
-// app/Register.jsx
 "use client";
 
 import { useState } from 'react';
@@ -69,10 +68,10 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError(t('password_mismatch', { defaultValue: "Passwords do not match" }));

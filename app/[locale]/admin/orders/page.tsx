@@ -102,7 +102,11 @@ const ManageOrders = () => {
         const data = await response.json();
         setOrders(data);
       } catch (error) {
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unexpected error occurred');
+        }
       } finally {
         setLoading(false);
       }
@@ -130,7 +134,7 @@ const ManageOrders = () => {
       const refreshedOrders = await fetch('/api/auth/usersorders').then(res => res.json());
       setOrders(refreshedOrders);
       setSelectedOrders([]); // Clear selected orders after update
-    } catch  {
+    } catch {
       setError('Failed to update order status');
     }
   };

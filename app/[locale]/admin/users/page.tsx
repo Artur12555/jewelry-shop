@@ -98,7 +98,11 @@ const ManageUsers = () => {
         const data = await response.json();
         setUsers(data);
       } catch (error) {
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unexpected error occurred');
+        }
       } finally {
         setLoading(false);
       }

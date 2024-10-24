@@ -2,21 +2,28 @@
 
 import React, { useEffect, useState } from 'react';
 
-const fetchProductsByCategory = async (category) => {
+interface Product {
+  id: string; // or number depending on your API
+  name: string;
+  category: string;
+  stock: number; // adjust types according to your API response
+}
+
+const fetchProductsByCategory = async (category: string) => {
   const response = await fetch(`/api/auth/products?category=${encodeURIComponent(category)}`);
-  
+
   if (!response.ok) {
     throw new Error('Failed to fetch products');
   }
-  
+
   const products = await response.json();
   return products;
 };
 
 const RingsList = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -24,7 +31,11 @@ const RingsList = () => {
         const fetchedProducts = await fetchProductsByCategory('bracelets');
         setProducts(fetchedProducts);
       } catch (error) {
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unexpected error occurred');
+        }
       } finally {
         setLoading(false);
       }

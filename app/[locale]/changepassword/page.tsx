@@ -7,15 +7,20 @@ const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const { data: session } = useSession();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match");
+      return;
+    }
+
+    if (!session || !session.user?.email) {
+      setError("Session is not available");
       return;
     }
 
