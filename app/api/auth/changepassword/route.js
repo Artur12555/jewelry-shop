@@ -1,25 +1,24 @@
-import { Pool } from 'pg';
+import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-});
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; 
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function POST(req) {
   const { email, currentPassword, newPassword } = await req.json();
 
   try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    const user = result.rows[0];
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
 
-    if (!user) {
+    if (error || !user) {
       return new Response(JSON.stringify({ message: 'User not found' }), {
         status: 404,
       });
@@ -33,7 +32,17 @@ export async function POST(req) {
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    await pool.query('UPDATE users SET password = $1 WHERE email = $2', [hashedNewPassword, email]);
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ password: hashedNewPassword })
+      .eq('email', email);
+
+    if (updateError) {
+      console.error('Error updating password:', updateError);
+      return new Response(JSON.stringify({ message: 'Internal server error' }), {
+        status: 500,
+      });
+    }
 
     return new Response(JSON.stringify({ message: 'Password updated successfully' }), {
       status: 200,

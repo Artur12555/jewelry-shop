@@ -1,15 +1,11 @@
-import { Pool } from 'pg';
+import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-});
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -22,21 +18,38 @@ export async function GET(req) {
   }
 
   try {
-    const userResult = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
-    const user = userResult.rows[0];
+    // Fetch the user based on email
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', email)
+      .single();
 
-    if (!user) {
+    if (userError) {
+      console.error('Error fetching user:', userError);
       return new Response(JSON.stringify({ message: 'User not found' }), {
         status: 404,
       });
     }
 
-    const ordersResult = await pool.query('SELECT * FROM orders WHERE user_id = $1', [user.id]);
-    return new Response(JSON.stringify(ordersResult.rows), {
+    // Fetch the orders based on the user ID
+    const { data: orders, error: ordersError } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('user_id', user.id);
+
+    if (ordersError) {
+      console.error('Error fetching orders:', ordersError);
+      return new Response(JSON.stringify({ message: 'Error fetching orders' }), {
+        status: 500,
+      });
+    }
+
+    return new Response(JSON.stringify(orders), {
       status: 200,
     });
   } catch (error) {
-    console.error('Error fetching orders:', error);
+    console.error('Error:', error);
     return new Response(JSON.stringify({ message: 'Internal server error' }), {
       status: 500,
     });

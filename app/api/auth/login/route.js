@@ -1,17 +1,13 @@
-import { Pool } from 'pg';
+import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-});
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; 
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -31,10 +27,13 @@ export async function POST(req) {
   }
 
   try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    const user = result.rows[0];
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
 
-    if (!user) {
+    if (error || !user) {
       return new Response(JSON.stringify({ message: 'User not found' }), {
         status: 404,
       });
@@ -43,10 +42,20 @@ export async function POST(req) {
     const resetToken = crypto.randomBytes(32).toString('hex');
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
 
-    await pool.query(
-      'UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE email = $3',
-      [resetToken, resetTokenExpiry, email]
-    );
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({
+        reset_token: resetToken,
+        reset_token_expiry: resetTokenExpiry,
+      })
+      .eq('email', email);
+
+    if (updateError) {
+      console.error('Error updating reset token:', updateError);
+      return new Response(JSON.stringify({ message: 'Internal server error' }), {
+        status: 500,
+      });
+    }
 
     const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}`;
 

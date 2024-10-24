@@ -1,12 +1,11 @@
-import { Pool } from 'pg';
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-});
+dotenv.config();
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; 
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // GET all products or filter by category
 export async function GET(req) {
@@ -14,16 +13,22 @@ export async function GET(req) {
   const category = searchParams.get('category');
 
   try {
-    let query = 'SELECT * FROM products';
-    const queryParams = [];
+    let query = supabase.from('products').select('*');
 
     if (category) {
-      query += ' WHERE category = $1';
-      queryParams.push(category);
+      query = query.eq('category', category);
     }
 
-    const result = await pool.query(query, queryParams);
-    return new Response(JSON.stringify(result.rows), {
+    const { data: products, error } = await query;
+
+    if (error) {
+      console.error('Error fetching products:', error);
+      return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
+        status: 500,
+      });
+    }
+
+    return new Response(JSON.stringify(products), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -42,12 +47,20 @@ export async function POST(req) {
   const { name, price, description, image_url, category, stock } = await req.json();
 
   try {
-    const result = await pool.query(
-      'INSERT INTO products (name, price, description, image_url, category, stock) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [name, price, description, image_url, category, stock]
-    );
+    const { data: product, error } = await supabase
+      .from('products')
+      .insert([{ name, price, description, image_url, category, stock }])
+      .select()
+      .single();
 
-    return new Response(JSON.stringify(result.rows[0]), {
+    if (error) {
+      console.error('Error adding product:', error);
+      return new Response(JSON.stringify({ error: 'Failed to add product' }), {
+        status: 500,
+      });
+    }
+
+    return new Response(JSON.stringify(product), {
       status: 201,
       headers: {
         'Content-Type': 'application/json',
@@ -66,12 +79,21 @@ export async function PATCH(req) {
   const { id, name, price, description, image_url, category, stock } = await req.json();
 
   try {
-    const result = await pool.query(
-      'UPDATE products SET name = $1, price = $2, description = $3, image_url = $4, category = $5, stock = $6 WHERE id = $7 RETURNING *',
-      [name, price, description, image_url, category, stock, id]
-    );
+    const { data: product, error } = await supabase
+      .from('products')
+      .update({ name, price, description, image_url, category, stock })
+      .eq('id', id)
+      .select()
+      .single();
 
-    return new Response(JSON.stringify(result.rows[0]), {
+    if (error) {
+      console.error('Error updating product:', error);
+      return new Response(JSON.stringify({ error: 'Failed to update product' }), {
+        status: 500,
+      });
+    }
+
+    return new Response(JSON.stringify(product), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

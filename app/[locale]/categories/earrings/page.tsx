@@ -28,7 +28,7 @@ const RingsList = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const fetchedProducts = await fetchProductsByCategory('bracelets');
+        const fetchedProducts = await fetchProductsByCategory('earrings');
         setProducts(fetchedProducts);
       } catch (error) {
         if (error instanceof Error) {
@@ -49,9 +49,9 @@ const RingsList = () => {
 
   return (
     <div>
-      <h1>Bracelets</h1>
+      <h1>Earrings</h1>
       {products.length === 0 ? (
-        <p>No bracelets available in this category.</p>
+        <p>No earrings available in this category.</p>
       ) : (
         products.map((product) => (
           <div key={product.id}>

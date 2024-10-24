@@ -1,18 +1,14 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { Pool } from 'pg';
+import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-});
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const handler = NextAuth({
   providers: [
@@ -26,22 +22,27 @@ const handler = NextAuth({
         const { email, password } = credentials;
 
         try {
-          const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-          const user = result.rows[0];
+          // Fetch the user from Supabase
+          const { data: user, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('email', email)
+            .single();
 
-          if (!user) {
-            return null;
+          if (error || !user) {
+            return null; // User not found
           }
 
+          // Compare the password using bcrypt
           const isMatch = await bcrypt.compare(password, user.password);
           if (!isMatch) {
-            return null;
+            return null; // Password does not match
           }
 
-          return { id: user.id, email: user.email };
+          return { id: user.id, email: user.email }; // Return user object
         } catch (error) {
           console.error('Error during authentication:', error);
-          return null;
+          return null; // Return null on error
         }
       },
     }),
