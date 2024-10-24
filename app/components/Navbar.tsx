@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { FaShoppingBag, FaSearch, FaCheck, FaUserAlt, FaSignInAlt } from 'react-icons/fa';
+import { FaShoppingBag, FaSearch, FaCheck, FaUserAlt, FaTimes, FaSignInAlt } from 'react-icons/fa';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -146,7 +146,7 @@ const CheckIcon = styled(FaCheck)`
   margin-left: auto;
 `;
 
-const languageMap = {
+const languageMap: Record<string, string> = {
   pl: "Polski",
   en: "English",
   de: "Deutsch"
@@ -237,15 +237,24 @@ const DropdownContainerDesktop = styled.div`
   }
 `;
 
+const DropdownContainerMobile = styled.div`
+  position: relative;
+  margin-left: 20px;
+  margin-top: 10px;
 
-const categories = ['necklaces', 'rings', 'bracelets', 'earrings', 'gemstones'];
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
+const categories: string[] = ['necklaces', 'rings', 'bracelets', 'earrings', 'gemstones'];
 
 const Navbar = () => {
   const t = useTranslations('HomePage');
   const router = useRouter();
-  const { data: session } = useSession(); 
+  const { data: session } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<string>('en'); // Default locale
+  const [selectedLocale, setSelectedLocale] = useState<string>('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -253,11 +262,12 @@ const Navbar = () => {
     if (savedLocale) {
       setSelectedLocale(savedLocale);
     } else {
-      setSelectedLocale('en'); // Default to 'en' if no locale is saved
+      const defaultLocale = 'en';
+      setSelectedLocale(defaultLocale);
     }
-  }, []);
+  }, [router]);
 
-  const handleLanguageChange = (locale: keyof typeof languageMap) => {
+  const handleLanguageChange = (locale: string) => {
     localStorage.setItem('locale', locale);
     const currentPath = window.location.pathname;
     const newPath = `/${locale}${currentPath.replace(/^\/[a-z]{2}/, '')}`;
@@ -309,49 +319,58 @@ const Navbar = () => {
           </Hamburger>
           <DropdownContainerDesktop>
             <LanguageDisplay onClick={() => setDropdownOpen(!dropdownOpen)}>
-              {languageMap[selectedLocale as keyof typeof languageMap] || selectedLocale.toUpperCase()}
+              {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
             </LanguageDisplay>
             <DropdownMenu open={dropdownOpen}>
               {Object.keys(languageMap).map((locale) => (
-                <DropdownItem key={locale} onClick={() => handleLanguageChange(locale as keyof typeof languageMap)}>
-                  {languageMap[locale as keyof typeof languageMap]}
-                  {locale === selectedLocale && <CheckIcon />}
+                <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
+                  {languageMap[locale]}
+                  {selectedLocale === locale && <CheckIcon />}
                 </DropdownItem>
               ))}
             </DropdownMenu>
           </DropdownContainerDesktop>
+          <IconWrapper onClick={session ? handleAccountRedirect : handleLoginRedirect}>
+            {session ? <FaUserAlt size={30} /> : <FaSignInAlt size={30} />}
+          </IconWrapper>
           <IconWrapper>
-            <FaSearch />
-            <FaShoppingBag />
-            {session ? (
-              <>
-                <IconWrapper onClick={handleAccountRedirect}>
-                  <FaUserAlt />
-                </IconWrapper>
-              </>
-            ) : (
-              <IconWrapper onClick={handleLoginRedirect}>
-                <FaSignInAlt />
-              </IconWrapper>
-            )}
+            <FaSearch size={30} />
+          </IconWrapper>
+          <IconWrapper>
+            <FaShoppingBag size={30} />
           </IconWrapper>
         </IconsContainer>
       </NavbarContainer>
-      <Sidebar isOpen={sidebarOpen}>
-        <CloseButton onClick={toggleSidebar}>✖</CloseButton>
-        {categories.map((category) => (
-          <CategoryLink key={category} onClick={() => navigateToCategory(category)}>
-            {t(category.charAt(0).toUpperCase() + category.slice(1))}
-          </CategoryLink>
-        ))}
-      </Sidebar>
       <CategoryBar>
-        {categories.map((category) => (
+        {categories.map(category => (
           <span key={category} onClick={() => navigateToCategory(category)}>
-            {t(category.charAt(0).toUpperCase() + category.slice(1))}
+            {t(`categories.${category}`)}
           </span>
         ))}
       </CategoryBar>
+      <Sidebar isOpen={sidebarOpen}>
+        <CloseButton onClick={toggleSidebar}>
+          <FaTimes size={30} />
+        </CloseButton>
+        {categories.map(category => (
+          <CategoryLink key={category} onClick={() => navigateToCategory(category)}>
+            {t(`categories.${category}`)}
+          </CategoryLink>
+        ))}
+        <DropdownContainerMobile>
+          <LanguageDisplay onClick={() => setDropdownOpen(!dropdownOpen)}>
+            {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
+          </LanguageDisplay>
+          <DropdownMenu open={dropdownOpen}>
+            {Object.keys(languageMap).map((locale) => (
+              <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
+                {languageMap[locale]}
+                {selectedLocale === locale && <CheckIcon />}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </DropdownContainerMobile>
+      </Sidebar>
     </OuterContainer>
   );
 };
