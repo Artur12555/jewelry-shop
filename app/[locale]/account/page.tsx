@@ -11,6 +11,7 @@ const OuterContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  height: 50vh;
 `;
 
 const AccountWrapper = styled.div`
