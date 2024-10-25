@@ -51,6 +51,15 @@ const ColumnHeader = styled.h4`
   }
 `;
 
+const ChevronWrapper = styled.span`
+  margin-left: auto;
+  display: block;
+
+  @media (min-width: 769px) {
+    display: none; /* Hide chevrons on desktop */
+  }
+`;
+
 const ColumnItem = styled.span<{ show?: boolean }>`
   font-family: 'Lato', sans-serif;
   font-size: 0.9rem;
@@ -65,8 +74,8 @@ const ColumnItem = styled.span<{ show?: boolean }>`
     color: white;
   }
 
-  @media (max-width: 768px) {
-    display: ${({ show }) => (show ? 'block' : 'none')};
+  @media (min-width: 768px) {
+    display: block; /* Always show on larger screens */
   }
 `;
 
@@ -102,9 +111,9 @@ const Footer = () => {
           <Column>
             <ColumnHeader onClick={() => toggleColumn('help')}>
               {t('help')}
-              <span style={{ marginLeft: 'auto', display: 'block' }}>
+              <ChevronWrapper>
                 {expandedColumns['help'] ? <FaChevronUp /> : <FaChevronDown />}
-              </span>
+              </ChevronWrapper>
             </ColumnHeader>
             <ColumnItem show={expandedColumns['help']}>{t('contact')}</ColumnItem>
             <ColumnItem show={expandedColumns['help']}>{t('faq')}</ColumnItem>
@@ -116,9 +125,9 @@ const Footer = () => {
           <Column>
             <ColumnHeader onClick={() => toggleColumn('paymentMethods')}>
               {t('paymentMethods')}
-              <span style={{ marginLeft: 'auto', display: 'block' }}>
+              <ChevronWrapper>
                 {expandedColumns['paymentMethods'] ? <FaChevronUp /> : <FaChevronDown />}
-              </span>
+              </ChevronWrapper>
             </ColumnHeader>
             <ColumnItem show={expandedColumns['paymentMethods']}>{t('personalizedOrders')}</ColumnItem>
             <ColumnItem show={expandedColumns['paymentMethods']}>{t('deliveryCosts')}</ColumnItem>
@@ -127,9 +136,9 @@ const Footer = () => {
           <Column>
             <ColumnHeader onClick={() => toggleColumn('customerSupport')}>
               {t('customerSupport')}
-              <span style={{ marginLeft: 'auto', display: 'block' }}>
+              <ChevronWrapper>
                 {expandedColumns['customerSupport'] ? <FaChevronUp /> : <FaChevronDown />}
-              </span>
+              </ChevronWrapper>
             </ColumnHeader>
             <ColumnItem show={expandedColumns['customerSupport']}>{t('returns')}</ColumnItem>
             <ColumnItem show={expandedColumns['customerSupport']}>{t('complaints')}</ColumnItem>

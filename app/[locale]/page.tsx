@@ -1,55 +1,80 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { createClient } from '@supabase/supabase-js';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import styled from 'styled-components';
 
-type Product = {
-  id: number; // or string based on your schema
-  name: string;
-  description: string;
-  price: number;
-  image_url: string; // Ensure this matches your API response
-};
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const CarouselContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 120px; /* Add rounded corners */
+  overflow: hidden; /* Ensure the corners are applied */
+`;
+
+const CarouselImage = styled.img`
+  width: 100%;
+  height: auto;
+  cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+`;
 
 const Home = () => {
-  const t = useTranslations('HomePage');
-
-  const [products, setProducts] = useState<Product[]>([]);
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/products');
-        const data = await response.json();
-        console.log(data); // Log the response data to check its structure
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
+    const fetchPhotos = async () => {
+      const { data, error } = await supabase
+        .from('photos')
+        .select('url, site'); // Fetch both url and site
+
+      if (error) {
+        console.error('Error fetching photos:', error);
+      } else {
+        setPhotos(data);
+        console.log(data); // Debug: log fetched data
       }
     };
 
-    fetchProducts();
+    fetchPhotos();
   }, []);
 
+  const handleClick = (site) => {
+    window.open(site, '_blank'); // Open the URL in a new tab
+  };
+
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
+
   return (
-    <div>
-      <h1>{t('title')}</h1>
-      <h2>{t('shopTitle')}</h2>
-      <div>
-        {Array.isArray(products) && products.length > 0 ? (
-          products.map(product => (
-            <div key={product.id}>
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <p>{t('price', { price: product.price })}</p>
-              <img src={product.image_url} alt={product.name} />
-            </div>
-          ))
-        ) : (
-          <p>{t('noProducts')}</p>
-        )}
-      </div>
-    </div>
+    <CarouselContainer>
+      <Carousel 
+        responsive={responsive}
+        infinite={true}
+        arrows={true}
+        renderArrowsWhenDisabled={false}
+        autoPlay={true} // Enable auto-swipe
+        autoPlaySpeed={5000} // Set swipe interval to 5 seconds
+      >
+        {photos.map((photo, index) => (
+          <div key={index} onClick={() => handleClick(photo.site)}> {/* Handle click event */}
+            <CarouselImage src={photo.url} alt={`Photo ${index + 1}`} />
+          </div>
+        ))}
+      </Carousel>
+    </CarouselContainer>
   );
 };
 
