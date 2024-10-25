@@ -8,6 +8,11 @@ import styled from 'styled-components';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables');
+}
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const CarouselContainer = styled.div`
@@ -23,8 +28,15 @@ const CarouselImage = styled.img`
   cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
 `;
 
+// Define the type for the photo data
+interface Photo {
+  url: string;
+  site: string;
+}
+
 const Home = () => {
-  const [photos, setPhotos] = useState([]);
+  // Update the state to use the Photo type
+  const [photos, setPhotos] = useState<Photo[]>([]);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -35,7 +47,7 @@ const Home = () => {
       if (error) {
         console.error('Error fetching photos:', error);
       } else {
-        setPhotos(data);
+        setPhotos(data); // Set the state with the fetched data
         console.log(data); // Debug: log fetched data
       }
     };
@@ -43,7 +55,7 @@ const Home = () => {
     fetchPhotos();
   }, []);
 
-  const handleClick = (site) => {
+  const handleClick = (site: string) => {
     window.open(site, '_blank'); // Open the URL in a new tab
   };
 
