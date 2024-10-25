@@ -91,7 +91,13 @@ const IconWrapper = styled.div`
   }
 `;
 
-const LanguageDisplay = styled.div`
+const SelectorContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const Selector = styled.div`
   background-color: black;
   border: 1px solid transparent;
   color: white;
@@ -150,6 +156,12 @@ const languageMap: Record<string, string> = {
   pl: "Polski",
   en: "English",
   de: "Deutsch"
+};
+
+const currencyMap: Record<string, string> = {
+  PLN: "PLN",
+  EUR: "EUR",
+  GBP: "GBP"
 };
 
 const CategoryBar = styled.div`
@@ -231,7 +243,8 @@ const CategoryLink = styled.span`
 const DropdownContainerDesktop = styled.div`
   position: relative;
   margin-right: 20px;
-
+  display: flex;
+  gap: 10px;
   @media (max-width: 768px) {
     display: none;
   }
@@ -241,7 +254,8 @@ const DropdownContainerMobile = styled.div`
   position: relative;
   margin-left: 20px;
   margin-top: 10px;
-
+  display: flex;
+  gap: 10px;
   @media (min-width: 769px) {
     display: none;
   }
@@ -254,17 +268,16 @@ const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<string>('');
+  const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
+  const [selectedLocale, setSelectedLocale] = useState<string>('en');
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('PLN');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const savedLocale = typeof window !== 'undefined' ? localStorage.getItem('locale') : null;
-    if (savedLocale) {
-      setSelectedLocale(savedLocale);
-    } else {
-      const defaultLocale = 'en';
-      setSelectedLocale(defaultLocale);
-    }
+    const savedLocale = localStorage.getItem('locale');
+    const savedCurrency = localStorage.getItem('currency') || 'PLN';
+    setSelectedLocale(savedLocale || 'en');
+    setSelectedCurrency(savedCurrency);
   }, [router]);
 
   const handleLanguageChange = (locale: string) => {
@@ -275,6 +288,14 @@ const Navbar = () => {
     setSelectedLocale(locale);
     setDropdownOpen(false);
   };
+
+ const handleCurrencyChange = (currency: string) => {
+  localStorage.setItem('currency', currency);
+  setSelectedCurrency(currency);
+  
+  // Refresh the page to reflect the currency change
+  window.location.reload(); // This will reload the current page
+};
 
   const handleLoginRedirect = () => {
     const newPath = `/${selectedLocale}/login`;
@@ -317,19 +338,6 @@ const Navbar = () => {
             <HamburgerLine />
             <HamburgerLine />
           </Hamburger>
-          <DropdownContainerDesktop>
-            <LanguageDisplay onClick={() => setDropdownOpen(!dropdownOpen)}>
-              {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
-            </LanguageDisplay>
-            <DropdownMenu open={dropdownOpen}>
-              {Object.keys(languageMap).map((locale) => (
-                <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
-                  {languageMap[locale]}
-                  {selectedLocale === locale && <CheckIcon />}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </DropdownContainerDesktop>
           <IconWrapper onClick={session ? handleAccountRedirect : handleLoginRedirect}>
             {session ? <FaUserAlt size={30} /> : <FaSignInAlt size={30} />}
           </IconWrapper>
@@ -339,40 +347,85 @@ const Navbar = () => {
           <IconWrapper>
             <FaShoppingBag size={30} />
           </IconWrapper>
+          <DropdownContainerMobile>
+            <SelectorContainer>
+              <Selector onClick={() => setDropdownOpen(!dropdownOpen)}>
+                {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
+              </Selector>
+              <DropdownMenu open={dropdownOpen}>
+                {Object.keys(languageMap).map((locale) => (
+                  <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
+                    {languageMap[locale]}
+                    {selectedLocale === locale && <CheckIcon />}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </SelectorContainer>
+            <SelectorContainer>
+              <Selector onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}>
+                {selectedCurrency}
+              </Selector>
+              <DropdownMenu open={currencyDropdownOpen}>
+                {Object.keys(currencyMap).map((currency) => (
+                  <DropdownItem key={currency} onClick={() => handleCurrencyChange(currency)}>
+                    {currencyMap[currency]}
+                    {selectedCurrency === currency && <CheckIcon />}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </SelectorContainer>
+          </DropdownContainerMobile>
+          <DropdownContainerDesktop>
+            <SelectorContainer>
+              <Selector onClick={() => setDropdownOpen(!dropdownOpen)}>
+                {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
+              </Selector>
+              <DropdownMenu open={dropdownOpen}>
+                {Object.keys(languageMap).map((locale) => (
+                  <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
+                    {languageMap[locale]}
+                    {selectedLocale === locale && <CheckIcon />}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </SelectorContainer>
+            <SelectorContainer>
+              <Selector onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}>
+                {selectedCurrency}
+              </Selector>
+              <DropdownMenu open={currencyDropdownOpen}>
+                {Object.keys(currencyMap).map((currency) => (
+                  <DropdownItem key={currency} onClick={() => handleCurrencyChange(currency)}>
+                    {currencyMap[currency]}
+                    {selectedCurrency === currency && <CheckIcon />}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </SelectorContainer>
+          </DropdownContainerDesktop>
         </IconsContainer>
       </NavbarContainer>
       <CategoryBar>
-        {categories.map(category => (
+        {categories.map((category) => (
           <span key={category} onClick={() => navigateToCategory(category)}>
-            {t(`categories.${category}`)}
+            {t(category)}
           </span>
         ))}
       </CategoryBar>
       <Sidebar isOpen={sidebarOpen}>
         <CloseButton onClick={toggleSidebar}>
-          <FaTimes size={30} />
+          <FaTimes />
         </CloseButton>
-        {categories.map(category => (
+        {categories.map((category) => (
           <CategoryLink key={category} onClick={() => navigateToCategory(category)}>
-            {t(`categories.${category}`)}
+            {t(category)}
           </CategoryLink>
         ))}
-        <DropdownContainerMobile>
-          <LanguageDisplay onClick={() => setDropdownOpen(!dropdownOpen)}>
-            {languageMap[selectedLocale] || selectedLocale.toUpperCase()}
-          </LanguageDisplay>
-          <DropdownMenu open={dropdownOpen}>
-            {Object.keys(languageMap).map((locale) => (
-              <DropdownItem key={locale} onClick={() => handleLanguageChange(locale)}>
-                {languageMap[locale]}
-                {selectedLocale === locale && <CheckIcon />}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </DropdownContainerMobile>
+ 
       </Sidebar>
     </OuterContainer>
   );
 };
 
 export default Navbar;
+

@@ -25,13 +25,13 @@
     "shopTitle": "Jewelry and Gems Shop",
     "price": "Price: {price} $",
     "noProducts": "No products available.",
-    "categories": {
+     
       "necklaces": "Necklaces",
       "rings": "Rings",
       "bracelets": "Bracelets",
       "earrings": "Earrings",
       "gemstones": "Gemstones"
-    }
+    
   },
   "FAQ": {
     "title": "Frequently Asked Questions",

@@ -7,13 +7,12 @@
     "shopTitle": "Schmuck und Edelsteine Geschäft",
     "price": "Preis: {price} $",
     "noProducts": "Keine Produkte verfügbar.",
-    "categories": {
       "necklaces": "Halsketten",
       "rings": "Ringe",
       "bracelets": "Armbänder",
       "earrings": "Ohrringe",
       "gemstones": "Edelsteine"
-    }
+    
   },
   "FAQ": {
     "title": "Häufig gestellte Fragen",

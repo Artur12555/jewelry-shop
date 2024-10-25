@@ -7,13 +7,12 @@
     "shopTitle": "Sklep z biżuterią i kamieniami szlachetnymi",
     "price": "Cena: {price} $",
     "noProducts": "Brak dostępnych produktów.",
-    "categories": {
       "necklaces": "Naszyjniki",
       "rings": "Pierścionki",
       "bracelets": "Bransoletki",
       "earrings": "Kolczyki",
       "gemstones": "Kamienie szlachetne"
-    }
+    
   },
   "FAQ": {
     "title": "Najczęściej zadawane pytania",
