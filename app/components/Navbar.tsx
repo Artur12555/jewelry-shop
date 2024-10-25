@@ -247,7 +247,7 @@ const DropdownContainerMobile = styled.div`
   }
 `;
 
-const categories: string[] = ['necklaces', 'rings', 'bracelets', 'earrings', 'gemstones'];
+const categories: string[] = ['rings', 'earrings', 'gemstones'];
 
 const Navbar = () => {
   const t = useTranslations('HomePage');
