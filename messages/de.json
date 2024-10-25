@@ -93,5 +93,12 @@
     "users": "Benutzer Verwalten",
     "orders": "Bestellungen Verwalten",
     "products": "Produkte Verwalten"
+  },
+  "Badges":{
+    "fastDelivery": "Schnelle Lieferung",
+    "certifications": "Zertifikate",
+    "guaranteedSatisfaction": "Garantierte Zufriedenheit",
+    "uniqueness": "Einzigartigkeit",
+    "safePayments": "Sichere Zahlungen"
   }
 }

@@ -96,5 +96,12 @@
     "users": "Manage Users",
     "orders": "Manage Orders",
     "products": "Manage Products"
+  },
+  "Badges":{
+    "fastDelivery": "Fast delivery",
+    "certifications": "Certifications",
+    "guaranteedSatisfaction": "Guaranteed satisfaction",
+    "uniqueness": "Uniqueness",
+    "safePayments": "Safe payments"
   }
 }

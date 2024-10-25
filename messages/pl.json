@@ -93,5 +93,12 @@
     "users": "Zarządzaj Użytkownikami",
     "orders": "Zarządzaj Zamówieniami",
     "products": "Zarządzaj Produktami"
+  },
+  "Badges":{
+    "fastDelivery": "Szybka dostawa",
+    "certifications": "Certyfikaty",
+    "guaranteedSatisfaction": "Gwarancja satysfakcji",
+    "uniqueness": "Wyjątkowość",
+    "safePayments": "Bezpieczne płatności"
   }
 }
